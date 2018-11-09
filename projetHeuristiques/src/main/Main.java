@@ -7,6 +7,7 @@ import java.util.List;
 
 import methodes.Descente;
 import methodes.MonteCarlo;
+import methodes.VNS;
 import tools.FileReader;
 import tools.Incompatibilite;
 import tools.Objet;
@@ -34,10 +35,11 @@ public class Main {
 		
 		Solution s1 = new Solution(listObjet);
 		
-		Solution best = Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
+		//Solution best = Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
 		//Solution best = MonteCarlo.resoudre(s1, poidsMaxSac, listIncompatibilite, 1000);
+		Solution best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 0);
 		
-		System.out.println(best);
+		//System.out.println(best);
 		
 		
 		/*s1.evaluer(poidsMaxSac, listIncompatibilite);

@@ -16,6 +16,7 @@ public class Solution {
 	public List<Solution> voisinage;
 	public List<Solution> voisinageAmeliorant;
 	public List<Solution> voisinageNonAmeliorant;
+	public int lastChangedObject;
 	
 	
 	//Constructeur
@@ -33,7 +34,7 @@ public class Solution {
 	public void randomize () {
 		
 		for (int i=0; i<this.listObjets.size(); i++) {
-			if (Math.random() >= Math.random()){
+			if (Math.random() < 0.05){ //changer en fonction de la densité des imcompat ?
 				this.listObjets.get(i).setDansSac(true);
 			}else {
 				this.listObjets.get(i).setDansSac(false);
@@ -98,6 +99,7 @@ public class Solution {
 			newSol.listObjets.get(i).setDansSac(true);
 		}
 		
+		newSol.lastChangedObject = i;
 		return newSol;
 	}
 	
@@ -105,10 +107,47 @@ public class Solution {
 		//List<Solution> voisinage = new ArrayList<Solution>();
 		for(int i = 0; i<this.listObjets.size(); i++) {
 			this.voisinage.add(this.genereVoisin(i));	
-			//voisinage.get(voisinage.size()-1).evaluer(poidsSac, listIncompatibilite);
+		}	
+	}
+	
+	public void getNextVoisinage() {
+		this.voisinage.clear();
+		for(Solution s : this.voisinage) {
+			for(int i = 0; i<this.listObjets.size(); i++) {
+				if(i!= s.lastChangedObject) {
+					this.voisinage.add(s.genereVoisin(i));	
+				}
+			}		
+		}
+	}
+	
+	/*public Solution genereVoisin(int[] toChange) {
+		Solution newSol = new Solution(this.listObjets);
+		for(int i : toChange) {
+			if (newSol.listObjets.get(i).estDansSac()) {
+				newSol.listObjets.get(i).setDansSac(false);
+			}else {
+				newSol.listObjets.get(i).setDansSac(true);
+			}
 		}
 		
+		return newSol;
 	}
+	
+	public void getVoisinage2() {
+		List<Integer> toChange = new ArrayList<Integer>();
+		for(int i=0; i<this.listObjets.size(); i++) {
+			for(int j=0; j<this.listObjets.size(); j++) {
+				if(i!=j) {
+					toChange.add(i);
+					toChange.add(j);
+					
+				}
+			}
+		}
+	}*/
+	
+
 	
 	public void separeVoisinage(){
 		for(Solution s : this.voisinage) {
