@@ -32,7 +32,7 @@ public class Solution {
 	}
 	
 	public void randomize () {
-		
+		//Calcul d'une solution au hasard
 		for (int i=0; i<this.listObjets.size(); i++) {
 			if (Math.random() < 0.05){ //changer en fonction de la densité des imcompat ?
 				this.listObjets.get(i).setDansSac(true);
@@ -67,10 +67,12 @@ public class Solution {
 		this.poids = calculPoids();
 		this.valeur = calculValeur();
 		
+		//Si sac trop lourd valeur = -poids en trop
 		if (this.poids > poidsSac) {
 			this.valeur = poidsSac - this.poids;
 		}
-	
+		
+		//Si pas réalisable -Inf
 		if(!estRealisable(poidsSac, listIncompatibilite)) {
 			this.valeur = -999999;
 		}
@@ -80,12 +82,8 @@ public class Solution {
 	
 	//Vérifie si la solution est réalisable
 	public boolean estRealisable(float poidsSac, List<Incompatibilite> listIncompatibilite) {
-		//Contrainte de poids
-		/*int retour = 1;
-		if (this.poids > poidsSac) {
-			retour = 0;
-		}*/
 		
+		//renvoie vraie la solution n'a pas d'incompatibilite
 		//Contrainte incomptatibilité
 		for (Incompatibilite i : listIncompatibilite) {
 			if ( (this.listObjets.get(i.getObjet1()).estDansSac()) && (this.listObjets.get(i.getObjet2()).estDansSac()) ) {
@@ -96,6 +94,7 @@ public class Solution {
 	}
 	
 	public Solution genereVoisin(int i) {
+		//genere le voisin direct en changeant l'elément i
 		Solution newSol = new Solution(this.listObjets);
 		
 		if (newSol.listObjets.get(i).estDansSac()) {
@@ -110,6 +109,7 @@ public class Solution {
 	
 	
 	public void getVoisinage(){
+		//Obtenir le voisinage direct
 		//List<Solution> voisinage = new ArrayList<Solution>();
 		for(int i = 0; i<this.listObjets.size(); i++) {
 			this.voisinage.add(this.genereVoisin(i));	
@@ -169,6 +169,7 @@ public class Solution {
 
 	
 	public void separeVoisinage(){
+		//Repartir les voisins entre les ensembles améliorant et non améliorant
 		for(Solution s : this.voisinage) {
 			if (s.valeur > this.valeur)
 				this.voisinageAmeliorant.add(s);
@@ -179,15 +180,6 @@ public class Solution {
 	
 	public String toString() {
 		String s = "";
-		/*
-		for(Objet o : this.listObjets) {
-			s += o.toString() + " ";
-		}
-		
-		s+= "\n";
-		s+="Poids : " + this.poids + " " + "Valeur : " + this.valeur; 
-		s+= "\n";
-		return s;*/
 		
 		s+="Objets dans le sac : ";
 		

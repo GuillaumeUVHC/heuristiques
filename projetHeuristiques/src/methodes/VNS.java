@@ -1,92 +1,67 @@
 package methodes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import tools.Incompatibilite;
-import tools.Objet;
 import tools.Solution;
 
 public class VNS {
-	
+	/*methode permettant de changer la façon dont "mute" les solutions,*/
 	public static Solution genereVoisinSmart(Solution s, int i, List<Incompatibilite> listIncompatibilite, int poidsMaxSac) {
 		Solution newSol = new Solution(s.listObjets);
-		
 		newSol = s.genereVoisin(i);
-		
-		/*newSol.evaluer(poidsMaxSac, listIncompatibilite);
-		if(newSol.poids < poidsMaxSac) {
-			newSol.listObjets.get(i).setDansSac(false);
-		}*/
-		
-		//System.out.print(" Ajout " + i);
-		
-		/*for (Incompatibilite imcomp : listIncompatibilite) {
-			if ( (newSol.listObjets.get(imcomp.getObjet1()).estDansSac()) && (newSol.listObjets.get(imcomp.getObjet2()).estDansSac()) ) {
-				newSol.listObjets.get(imcomp.getObjet1()).setDansSac(false);
-			}
-		}*/
-		
-		
-		
 		newSol.lastChangedObject = i;
 		return newSol;
 	}
 
-	public static Solution resoudre(Solution x0, int poidsMaxSac, List<Incompatibilite> listIncompatibilite, int k) { //voisinage int pour calculer plusieurs voisinags (Nk je change k valeurs)
+	public static Solution resoudre(Solution x0, int poidsMaxSac, List<Incompatibilite> listIncompatibilite, int k, int iterationMax) { //voisinage int pour calculer plusieurs voisinags (Nk je change k valeurs)
 
+		//Init
 		boolean fin = false;
 		Solution best = new Solution(x0.listObjets);
 		Solution x = x0;
-		//best.randomize();
-		List<Solution> voisinage= new ArrayList<Solution>();
 		best.evaluer(poidsMaxSac, listIncompatibilite);
-		int n = 0;
-		boolean realisable = false;
-		//best.voisinage.clear();
+		int ite = 0;
 		
 		while (!fin) {
 			lefor:
 			for (int i=1;i<=k;i++) {
-				//System.out.println("VNS ITE " + i);
-				
+				//Un voisinage correspond à l'insertion ou au retrait d'un nombre définit de valeur 
+				//Vn = je retire ou ajoute n objet à mon sac à dos
 				x = best;
 				
+				//Je choisis au hasard une solution dans le voisinage i 
 				for(int j=0; j<i; j++) {
+					//je genère le voisin du voisinage i
 					x = genereVoisinSmart(x,(int) (Math.random() * Math.random() * best.listObjets.size()), listIncompatibilite, poidsMaxSac);
 				}
+				//J'avalue ma solution
 				x.evaluer(poidsMaxSac, listIncompatibilite);
-				System.out.println("solution au pif dans v"+i+"\n" + x);
 				
+				//J'effectue la méthode de descente à partir de la solution prise au hasard
 				x = Descente.resoudre(x, poidsMaxSac, listIncompatibilite);
-
-				
+				//j'évalue ma solution trouvée
 				x.evaluer(poidsMaxSac, listIncompatibilite);
 				
+				//J'affiche le résultat
 				System.out.println("Solution trouvée par descente : \n" + x);
 				System.out.println("BEST : " + best.valeur);
+				
+				//Si la solution trouvé est meilleur que la meilleure précédente, je l'enregistre
 				if (x.valeur > best.valeur) {
 					best = x;
-					System.out.println("ITE" +i+ " meilleure Solution trouvée par descente : \n" + x);
+					System.out.println("ITE" +ite+ " meilleure Solution trouvée par descente : \n" + x);
 					break lefor;
 					
 				}	
-				
-				
-			
-
 			}
-			
-			//System.out.println("Exploration "+k+" voisinages terminée");
 		
+		
+			if (ite > iterationMax)
+				fin = true;
+			else
+			 ite ++; 
 		}
-		
-		
-		
-		
-
-		//System.out.println(best);
-
 		return best;
 	}
 

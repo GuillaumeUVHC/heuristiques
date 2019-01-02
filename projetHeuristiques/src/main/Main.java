@@ -20,9 +20,10 @@ public class Main {
 	public static void main(String[] args) {
 
 		
-		//File f = new File("../projetHeuristiques/conf/1I1");
+		//Recupération du fichier en argument
 		File f = new File(args[0]);
 		
+		//Initialisation des données par lecture du fichier
 		int poidsMaxSac = 0;
 		List<Objet> listObjet = new ArrayList<Objet>();
 		List<Incompatibilite> listIncompatibilite = new ArrayList<Incompatibilite>();
@@ -33,36 +34,15 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		//Initialisation d'une solution de départ
 		Solution s1 = new Solution(listObjet);
 		
-		Solution best = s1;//Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
-		//System.out.println("Par Descente :" + best);
-		//Solution best = MonteCarlo.resoudre(s1, poidsMaxSac, listIncompatibilite, 1000);
-	    best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 10);
+		Solution best = s1;
+	    best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 20, 200);
+	    best = Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
+	    best = MonteCarlo.resoudre(s1, poidsMaxSac, listIncompatibilite, 500);
 		
-		System.out.println("Par VNS : " + best);
-		
-		
-		/*s1.evaluer(poidsMaxSac, listIncompatibilite);
-		//System.out.println(s1);
-		
-		s1.getVoisinage();
-		
-		for (Solution s : s1.voisinage) {
-			s.evaluer(poidsMaxSac, listIncompatibilite);
-		}
-		
-		s1.separeVoisinage();	
-		
-		System.out.println(s1.voisinageAmeliorant);
-		System.out.println(s1.voisinageNonAmeliorant);
-		*/
-		//System.out.print(listObjet);
-		//System.out.print("\n");
-		//System.out.print(listIncompatibilite);
-		
-		
-
+		System.out.println("Solution : " + best);
 	}
 
 }
