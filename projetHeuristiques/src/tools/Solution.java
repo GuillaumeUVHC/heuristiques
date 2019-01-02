@@ -67,19 +67,24 @@ public class Solution {
 		this.poids = calculPoids();
 		this.valeur = calculValeur();
 		
-		if (!this.estRealisable(poidsSac, listIncompatibilite)){
-			this.valeur = 0;
+		if (this.poids > poidsSac) {
+			this.valeur = poidsSac - this.poids;
+		}
+	
+		if(!estRealisable(poidsSac, listIncompatibilite)) {
+			this.valeur = -999999;
 		}
 		
 		return valeur;
 	}
 	
 	//Vérifie si la solution est réalisable
-	boolean estRealisable(float poidsSac, List<Incompatibilite> listIncompatibilite) {
+	public boolean estRealisable(float poidsSac, List<Incompatibilite> listIncompatibilite) {
 		//Contrainte de poids
+		/*int retour = 1;
 		if (this.poids > poidsSac) {
-			return false;
-		}
+			retour = 0;
+		}*/
 		
 		//Contrainte incomptatibilité
 		for (Incompatibilite i : listIncompatibilite) {
@@ -103,6 +108,7 @@ public class Solution {
 		return newSol;
 	}
 	
+	
 	public void getVoisinage(){
 		//List<Solution> voisinage = new ArrayList<Solution>();
 		for(int i = 0; i<this.listObjets.size(); i++) {
@@ -111,14 +117,27 @@ public class Solution {
 	}
 	
 	public void getNextVoisinage() {
-		this.voisinage.clear();
+		//this.voisinage.clear();
+		ArrayList<Solution> newVoisinage = new ArrayList<Solution>();
 		for(Solution s : this.voisinage) {
 			for(int i = 0; i<this.listObjets.size(); i++) {
 				if(i!= s.lastChangedObject) {
-					this.voisinage.add(s.genereVoisin(i));	
+					newVoisinage.add(s.genereVoisin(i));
 				}
 			}		
 		}
+		
+		this.voisinage = newVoisinage;
+		
+	}
+	
+	public Solution getNextVoisin() {
+		for(int i=0;i<this.listObjets.size(); i++) {
+			if(i!= this.lastChangedObject) {
+				return this.genereVoisin(i);
+			}
+		}
+		return null;
 	}
 	
 	/*public Solution genereVoisin(int[] toChange) {

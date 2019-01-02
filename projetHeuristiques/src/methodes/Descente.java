@@ -24,9 +24,9 @@ public class Descente {
 		Solution x = x0;
 		boolean fin = false;
 		
-		x.evaluer(poidsMaxSac, listIncompatibilite);
+		
 		while (!fin) {
-			
+			x.evaluer(poidsMaxSac, listIncompatibilite);
 			x.getVoisinage();
 			
 			for(Solution s : x.voisinage) {
@@ -34,9 +34,10 @@ public class Descente {
 			}
 			
 			x.separeVoisinage();
+			//System.out.println("Taille voisinage améliorant : " + x.voisinage.size());
 			
 			if (!x.voisinageAmeliorant.isEmpty()) {
-				System.out.println("Taille voisinage améliorant : " + x.voisinageAmeliorant.size());
+				
 				//x = x.voisinageAmeliorant.get(0);
 				x = trouverMeilleurSol(x.voisinageAmeliorant);
 				

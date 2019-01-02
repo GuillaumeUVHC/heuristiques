@@ -35,11 +35,12 @@ public class Main {
 		
 		Solution s1 = new Solution(listObjet);
 		
-		//Solution best = Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
+		Solution best = s1;//Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
+		//System.out.println("Par Descente :" + best);
 		//Solution best = MonteCarlo.resoudre(s1, poidsMaxSac, listIncompatibilite, 1000);
-		Solution best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 0);
+	    best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 10);
 		
-		//System.out.println(best);
+		System.out.println("Par VNS : " + best);
 		
 		
 		/*s1.evaluer(poidsMaxSac, listIncompatibilite);
