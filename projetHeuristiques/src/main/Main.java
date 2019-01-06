@@ -38,9 +38,9 @@ public class Main {
 		Solution s1 = new Solution(listObjet);
 		
 		Solution best = s1;
-	    best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 20, 200);
-	    best = Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
-	    best = MonteCarlo.resoudre(s1, poidsMaxSac, listIncompatibilite, 500);
+	    //best = VNS.resoudre(s1, poidsMaxSac, listIncompatibilite, 20, 200);
+	    //best = Descente.resoudre(s1, poidsMaxSac, listIncompatibilite);
+	    best = MonteCarlo.resoudre(s1, poidsMaxSac, listIncompatibilite, 1000000);
 		
 		System.out.println("Solution : " + best);
 	}

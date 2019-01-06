@@ -8,7 +8,9 @@ import tools.Solution;
 public class MonteCarlo {
 	
 public static Solution resoudre(Solution x0, int poidsMaxSac, List<Incompatibilite> listIncompatibilite, int ite) {
-		
+	
+		long start = System.currentTimeMillis();
+	
 		Solution x = x0;
 		Solution best = x;
 		Solution x2 = null;
@@ -20,9 +22,10 @@ public static Solution resoudre(Solution x0, int poidsMaxSac, List<Incompatibili
 		while (!fin) {
 			
 			//J'obtient son voisinage direct (retirer ou ajouter un objet)
-			x.getVoisinage();
+			//x.getVoisinage();
 			//Je prends un solution au hasard dans le voisinage
-			x2 = x.voisinage.get((int) (Math.random() * x.voisinage.size()));
+			//x2 = x.voisinage.get((int) (Math.random() * x.voisinage.size()));
+			x2 = x.genereVoisin((int) (Math.random() * x.listObjets.size()));
 			//je l'evalue
 			x2.evaluer(poidsMaxSac, listIncompatibilite);
 			//si la solution est meilleur je l'enregistre
@@ -40,7 +43,8 @@ public static Solution resoudre(Solution x0, int poidsMaxSac, List<Incompatibili
 		}
 		
 
-		
+		long end = System.currentTimeMillis();
+		System.out.println("trouve en " + (end - start));
 		return best;
 	}
 
